@@ -830,7 +830,6 @@ const EXAMS={
 hi:{id:'hi',name:'Health Insurance',code:'HI',icon:'🏥',desc:'Accident & health insurance products, MediShield Life, Integrated Shield Plans, claims, underwriting, and MAS regulations.',papers:2,questions:260,status:'live',
 studyNotes:[
 {name:'HI 8th Edition — Full Study Text',detail:'Complete textbook covering all 14 chapters (Dec 2025 edition)',file:'HI 8th Edition V1.2 Full Combined_Dec 2025.pdf'},
-{name:'HI 8th Edition — Key Concepts',detail:'Condensed key concepts summary for quick revision',file:'2025_HI 8th Edition V1.2 Key Concepts (Combined).pdf'}
 ]},
 m9:{id:'m9',name:'Life Insurance & ILP',code:'M9',icon:'📋',desc:'Life insurance products, investment-linked policies (ILPs), policy provisions, underwriting, and regulatory framework.',papers:0,questions:0,status:'soon',
 studyNotes:[
@@ -846,8 +845,8 @@ studyNotes:[
 ]}
 };
 // Firebase Storage base URL — update after uploading PDFs
-const STORAGE_BASE='https://firebasestorage.googleapis.com/v0/b/YOUR_PROJECT_ID.appspot.com/o/study-materials%2F';
-function getStudyURL(examId,fileName){return `${STORAGE_BASE}${examId}%2F${encodeURIComponent(fileName)}?alt=media`}
+const STORAGE_BASE='https://wyxlester.github.io/sci-exam-quiz/';
+function getStudyURL(examId,fileName){return `${STORAGE_BASE}${encodeURIComponent(fileName)}`}
 
 // ==================== LANDING PAGE ====================
 function renderLanding(){
