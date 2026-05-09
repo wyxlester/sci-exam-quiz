@@ -830,6 +830,7 @@ const EXAMS={
 hi:{id:'hi',name:'Health Insurance',code:'HI',icon:'🏥',desc:'Accident & health insurance products, MediShield Life, Integrated Shield Plans, claims, underwriting, and MAS regulations.',papers:2,questions:260,status:'live',
 studyNotes:[
 {name:'HI 8th Edition — Full Study Text',detail:'Complete textbook covering all 14 chapters (Dec 2025 edition)',file:'HI 8th Edition V1.2 Full Combined_Dec 2025.pdf'},
+{name:'HI 8th Edition — Key Concepts',detail:'Condensed key concepts summary for quick revision',file:'2025_HI 8th Edition V1.2 Key Concepts (Combined).pdf'}
 ]},
 m9:{id:'m9',name:'Life Insurance & ILP',code:'M9',icon:'📋',desc:'Life insurance products, investment-linked policies (ILPs), policy provisions, underwriting, and regulatory framework.',papers:0,questions:0,status:'soon',
 studyNotes:[
@@ -845,8 +846,8 @@ studyNotes:[
 ]}
 };
 // Firebase Storage base URL — update after uploading PDFs
-const STORAGE_BASE='https://wyxlester.github.io/sci-exam-quiz/';
-function getStudyURL(examId,fileName){return `${STORAGE_BASE}${encodeURIComponent(fileName)}`}
+const STORAGE_BASE='https://firebasestorage.googleapis.com/v0/b/YOUR_PROJECT_ID.appspot.com/o/study-materials%2F';
+function getStudyURL(examId,fileName){return `${STORAGE_BASE}${examId}%2F${encodeURIComponent(fileName)}?alt=media`}
 
 // ==================== LANDING PAGE ====================
 function renderLanding(){
@@ -1113,7 +1114,7 @@ let h=`<div class="qc ${cc}${bmOn?' bookmarked':''}"><div class="qh"><div class=
 q.o.forEach((op,i)=>{let oc=ans?'dis':'';if(ans){if(i===ua&&ok)oc+=' sok';else if(i===ua&&!ok)oc+=' ser';if(i===q.a&&!ok)oc+=' rok'}
 h+=`<button class="opt ${oc}" onclick="saveAns(${q.id},${i})" ${ans?'disabled':''}><span class="lt">${LL[i]}</span><span>${op}</span></button>`});
 h+=`</div>`;
-if(ans){const pgm=q.r.match(/p\.(\d+)/);const pgLink=pgm?getStudyURL('hi','HI 8th Edition V1.2 Full Combined_Dec 2025.pdf')+'#page='+(parseInt(pgm[1])+8):'';h+=`<div class="fb ${ok?'fok':'fer'}"><span>${ok?'✓':'✗'}</span> <strong>${ok?'Correct!':'Wrong — '+LL[q.a]}</strong><div class="fe">${q.e}</div><div class="fr">${pgLink?`<a href="${pgLink}" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;cursor:pointer">📖 ${q.r}</a>`:`📖 ${q.r}`}</div></div>`}
+if(ans){h+=`<div class="fb ${ok?'fok':'fer'}"><span>${ok?'✓':'✗'}</span> <strong>${ok?'Correct!':'Wrong — '+LL[q.a]}</strong><div class="fe">${q.e}</div><div class="fr">📖 ${q.r}</div></div>`}
 return h+`</div>`}
 
 function renderResults(a,ch){
