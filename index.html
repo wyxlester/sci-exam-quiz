@@ -786,7 +786,7 @@ const APP_VER='1.2';
 const CHANGELOG=[
 {ver:'1.2',date:'10 May 2026',title:'Multi-Exam Dashboard & Study Notes',sections:[
 {icon:'🏠',heading:'Exam Dashboard',body:'New dashboard showing all 4 SCI exams (HI, M9, M9A, RES5) with progress tracking. Click an exam to enter its quiz.'},
-{icon:'📚',heading:'Study Notes',body:'Access study material PDFs directly from the app. Notes for all 4 exams hosted on Firebase Storage with auth-gated access.'},
+{icon:'📚',heading:'Study Notes',body:'Access study material PDFs directly from the app. Notes for all 4 exams available for download.'},
 {icon:'🔄',heading:'Cross-Exam Navigation',body:'Browse study notes for other exams without leaving your current exam page.'},
 {icon:'🔖',heading:'Bookmarks',body:'Bookmark any question for quick review later. Filter by bookmarked questions across all chapters — synced to your account.'}
 ]},
@@ -829,8 +829,7 @@ let appMode='dashboard'; // 'dashboard' or 'exam'
 const EXAMS={
 hi:{id:'hi',name:'Health Insurance',code:'HI',icon:'🏥',desc:'Accident & health insurance products, MediShield Life, Integrated Shield Plans, claims, underwriting, and MAS regulations.',papers:2,questions:260,status:'live',
 studyNotes:[
-{name:'HI 8th Edition — Full Study Text',detail:'Complete textbook covering all 14 chapters (Dec 2025 edition)',file:'HI 8th Edition V1.2 Full Combined_Dec 2025.pdf'},
-{name:'HI 8th Edition — Key Concepts',detail:'Condensed key concepts summary for quick revision',file:'2025_HI 8th Edition V1.2 Key Concepts (Combined).pdf'}
+{name:'HI 8th Edition — Full Study Text',detail:'Complete textbook covering all 14 chapters (Dec 2025 edition)',file:'HI 8th Edition V1.2 Full Combined_Dec 2025.pdf'}
 ]},
 m9:{id:'m9',name:'Life Insurance & ILP',code:'M9',icon:'📋',desc:'Life insurance products, investment-linked policies (ILPs), policy provisions, underwriting, and regulatory framework.',papers:0,questions:0,status:'soon',
 studyNotes:[
@@ -845,9 +844,9 @@ studyNotes:[
 {name:'RES5 1st Edition — Full Study Text',detail:'Complete study text for Rules, Ethics & Skills (Dec 2025 edition)',file:'RES5 1st Edition Version 1.2_Full Study Text (Dec 2025).pdf'}
 ]}
 };
-// Firebase Storage base URL — update after uploading PDFs
-const STORAGE_BASE='https://firebasestorage.googleapis.com/v0/b/YOUR_PROJECT_ID.appspot.com/o/study-materials%2F';
-function getStudyURL(examId,fileName){return `${STORAGE_BASE}${examId}%2F${encodeURIComponent(fileName)}?alt=media`}
+// GitHub Pages base URL for study materials (PDFs in repo root)
+const STORAGE_BASE='https://wyxlester.github.io/sci-exam-quiz/';
+function getStudyURL(examId,fileName){return `${STORAGE_BASE}${encodeURIComponent(fileName)}`}
 
 // ==================== LANDING PAGE ====================
 function renderLanding(){
@@ -905,7 +904,6 @@ document.getElementById('root').innerHTML=`
 <p>All quiz questions are based on the following official study materials:</p>
 <ul class="land-refs">
 <li><span class="ref-icon">📕</span><div><div class="ref-title">HI 8th Edition V1.2 (Dec 2025)</div><div class="ref-desc">Official SCI Health Insurance textbook — full edition</div></div></li>
-<li><span class="ref-icon">📗</span><div><div class="ref-title">HI 8th Edition V1.2 Key Concepts (2025)</div><div class="ref-desc">Key concepts summary across all chapters</div></div></li>
 <li><span class="ref-icon">📘</span><div><div class="ref-title">HI Exam Condensed Study Notes</div><div class="ref-desc">Condensed revision notes for exam preparation</div></div></li>
 </ul>
 </div>
@@ -1034,7 +1032,7 @@ h+=`<a class="sn-card" href="${url}" target="_blank" rel="noopener">
 <div class="sn-info"><div class="sn-name">${oex.code}: ${sn.name}</div><div class="sn-detail">${sn.detail}</div></div>
 <span class="sn-arrow">↗</span></a>`})});
 
-h+=`<div class="sn-note">📌 <strong>Setup required:</strong> These PDFs are hosted on Firebase Storage. If links don\'t work yet, you need to upload the PDFs to Firebase Storage and update the STORAGE_BASE URL in the app code. See the Firebase Storage setup guide for instructions.</div>`;
+h+=`<div class="sn-note">📌 <strong>Note:</strong> Study material PDFs are hosted on GitHub. Click any note above to download.</div>`;
 h+=`</div>`;return h}
 
 // ==================== RENDER ====================
@@ -1114,7 +1112,7 @@ let h=`<div class="qc ${cc}${bmOn?' bookmarked':''}"><div class="qh"><div class=
 q.o.forEach((op,i)=>{let oc=ans?'dis':'';if(ans){if(i===ua&&ok)oc+=' sok';else if(i===ua&&!ok)oc+=' ser';if(i===q.a&&!ok)oc+=' rok'}
 h+=`<button class="opt ${oc}" onclick="saveAns(${q.id},${i})" ${ans?'disabled':''}><span class="lt">${LL[i]}</span><span>${op}</span></button>`});
 h+=`</div>`;
-if(ans){h+=`<div class="fb ${ok?'fok':'fer'}"><span>${ok?'✓':'✗'}</span> <strong>${ok?'Correct!':'Wrong — '+LL[q.a]}</strong><div class="fe">${q.e}</div><div class="fr">📖 ${q.r}</div></div>`}
+if(ans){const pgm=q.r.match(/p\.(\d+)/);const PG_OFF=[[12,8],[50,9],[62,12],[86,17],[99,23],[132,27],[150,32],[158,37],[212,39],[234,49],[242,56],[268,57],[300,59],[322,63]];const pgOff=p=>{for(const[m,o]of PG_OFF)if(p<=m)return o;return 63};const pgLink=pgm?getStudyURL('hi','HI 8th Edition V1.2 Full Combined_Dec 2025.pdf')+'#page='+(parseInt(pgm[1])+pgOff(parseInt(pgm[1]))):'';h+=`<div class="fb ${ok?'fok':'fer'}"><span>${ok?'✓':'✗'}</span> <strong>${ok?'Correct!':'Wrong — '+LL[q.a]}</strong><div class="fe">${q.e}</div><div class="fr">${pgLink?`<a href="${pgLink}" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;cursor:pointer">📖 ${q.r}</a>`:`📖 ${q.r}`}</div></div>`}
 return h+`</div>`}
 
 function renderResults(a,ch){
