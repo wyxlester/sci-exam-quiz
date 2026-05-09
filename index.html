@@ -1198,4 +1198,15 @@ async function togAdm(){showAdm=!showAdm;if(showAdm)await loadAll();render()}
 
 // ==================== INIT ====================
 auth.onAuthStateChanged(async u=>{
-if(u){curUser=u;appMode='dashboard';document.getElementById('root').innerHTML='<div class
+if(u){curUser=u;appMode='dashboard';document.getElementById('root').innerHTML='<div class="loading"><div class="spinner"></div>Loading...</div>';
+await loadU();loadAll().then(()=>{if(navMode==='leaderboard')render()});render();if(wnUnseen())setTimeout(showChangelog,600)}
+else{curUser=null;uData=null;isAdm=false;showAdm=false;appMode='dashboard';renderLanding()}});
+
+// Leaderboard auto-refresh
+setInterval(async()=>{if(curUser&&navMode==='leaderboard'){await loadAll();render()}},15000);
+
+
+try{const t=localStorage.getItem('hiqt');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}
+</script>
+</body>
+</html>
