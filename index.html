@@ -1113,7 +1113,7 @@ let h=`<div class="qc ${cc}${bmOn?' bookmarked':''}"><div class="qh"><div class=
 q.o.forEach((op,i)=>{let oc=ans?'dis':'';if(ans){if(i===ua&&ok)oc+=' sok';else if(i===ua&&!ok)oc+=' ser';if(i===q.a&&!ok)oc+=' rok'}
 h+=`<button class="opt ${oc}" onclick="saveAns(${q.id},${i})" ${ans?'disabled':''}><span class="lt">${LL[i]}</span><span>${op}</span></button>`});
 h+=`</div>`;
-if(ans){h+=`<div class="fb ${ok?'fok':'fer'}"><span>${ok?'✓':'✗'}</span> <strong>${ok?'Correct!':'Wrong — '+LL[q.a]}</strong><div class="fe">${q.e}</div><div class="fr">📖 ${q.r}</div></div>`}
+if(ans){const pgm=q.r.match(/p\.(\d+)/);const pgLink=pgm?getStudyURL('hi','HI 8th Edition V1.2 Full Combined_Dec 2025.pdf')+'#page='+pgm[1]:'';h+=`<div class="fb ${ok?'fok':'fer'}"><span>${ok?'✓':'✗'}</span> <strong>${ok?'Correct!':'Wrong — '+LL[q.a]}</strong><div class="fe">${q.e}</div><div class="fr">${pgLink?`<a href="${pgLink}" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;cursor:pointer">📖 ${q.r}</a>`:`📖 ${q.r}`}</div></div>`}
 return h+`</div>`}
 
 function renderResults(a,ch){
