@@ -1743,4 +1743,7 @@ else{curUser=null;uData=null;isAdm=false;showAdm=false;appMode='dashboard';rende
 setInterval(async()=>{if(curUser&&navMode==='leaderboard'){await loadAll();render()}},15000);
 
 
-try{const t=localStorage.getItem('hiqt');if(t)document.documentElement.setAttribute('data-theme
+try{const t=localStorage.getItem('hiqt');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}
+</script>
+</body>
+</html>
